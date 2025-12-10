@@ -22,5 +22,4 @@ RUN mkdir -p /home/${USERNAME}/.local/share/fonts && \
     starship preset catppuccin-powerline -o /home/${USERNAME}/.config/starship.toml
 
 # 5. Fix issues with permissions of directories used by NuGet
-RUN mkdir -p /home/${USERNAME}/.local/share/NuGet && \
-    chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.local
+RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.local
