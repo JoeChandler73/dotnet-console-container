@@ -1,45 +1,27 @@
 {
     "name": "DotNet Console App",
     "dockerFile": "Dockerfile",
-    "features": 
-    {
-        "ghcr.io/devcontainers/features/common-utils:2": 
-        {
-            "installZsh": false,
-            "installOhMyZsh": false,
-            "upgradePackages": true,
-            "username": "vscode"
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": true,
+            "configureZshAsDefaultShell": true,
+            "installOhMyZshConfig": true,
+            "upgradePackages": true
         },
-        "ghcr.io/devcontainers/features/docker-in-docker:2": 
-        {
-            "version": "latest",
-            "dockerDashComposeVersion": "v2"
-        },
-        "ghcr.io/devcontainers/features/git:1": 
-        {
-            "ppa": false,
-            "version": "latest"
-        },
-        "ghcr.io/joechandler73/devcontainer-features/common-dev-tools:latest": {},
-        "ghcr.io/joechandler73/devcontainer-features/kubectl-k9s:latest": 
-        {
-            "kubectlVersion": "latest",
-            "k9sVersion": "latest",
-            "installKubectx": true
-        },
-        "ghcr.io/joechandler73/devcontainer-features/starship-nerd-font:latest": 
-        {
-            "nerdFont": "IBMPlexMono",
-            "starshipPreset": "no-runtime-versions",
+        "ghcr.io/joechandler73/devcontainer-features/nerd-font:latest": {
+            "nerdFont": "JetBrainsMono",
             "fontVersion": "v3.4.0"
+        },
+        "ghcr.io/joechandler73/devcontainer-features/starship-prompt:latest": {
+            "starshipPreset": "no-runtime-versions"
+        },
+        "ghcr.io/joechandler73/devcontainer-features/zsh-syntax-highlighting:latest": {
+            "flavour": "frappe"
         }
     },
-    "customizations": 
-    {
-        "vscode": 
-        {
-            "extensions": 
-            [
+    "customizations": {
+        "vscode": {
+            "extensions": [
                // .NET Development
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.csdevkit",
@@ -73,13 +55,11 @@
                 "redhat.vscode-yaml",
                 "tamasfe.even-better-toml"
             ],
-            "settings": 
-            {
+            "settings": {
                 // Editor
                 "editor.formatOnSave": true,
                 "editor.defaultFormatter": "ms-dotnettools.csharp",
-                "editor.codeActionsOnSave": 
-                {
+                "editor.codeActionsOnSave": {
                     "source.fixAll": "explicit",
                     "source.organizeImports": "explicit"
                 },
@@ -91,7 +71,7 @@
                 // Terminal
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "terminal.integrated.fontSize": 14,
-                "terminal.integrated.fontFamily": "BlexMono Nerd Font, monospace",
+                "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font Mono",
                 "terminal.integrated.cursorStyle": "line",
                 "terminal.integrated.scrollback": 10000,
                 
@@ -106,14 +86,12 @@
                 "files.trimTrailingWhitespace": true,
                 "files.insertFinalNewline": true,
                 "files.trimFinalNewlines": true,
-                "files.exclude": 
-                {
+                "files.exclude": {
                     "**/bin": true,
                     "**/obj": true,
                     "**/.vs": true
                 },
-                "files.watcherExclude": 
-                {
+                "files.watcherExclude": {
                     "**/bin/**": true,
                     "**/obj/**": true,
                     "**/node_modules/**": true,
@@ -128,38 +106,27 @@
                 "omnisharp.organizeImportsOnFormat": true,
                 
                 // C# specific
-                "[csharp]": 
-                {
+                "[csharp]": {
                     "editor.defaultFormatter": "ms-dotnettools.csharp",
                     "editor.formatOnSave": true
                 },
                 
                 // JSON/YAML
-                "[json]": 
-                {
+                "[json]": {
                     "editor.defaultFormatter": "vscode.json-language-features",
                     "editor.tabSize": 2
                 },
-                "[jsonc]": 
-                {
+                "[jsonc]": {
                     "editor.defaultFormatter": "vscode.json-language-features",
                     "editor.tabSize": 2
                 },
-                "[yaml]": 
-                {
+                "[yaml]": {
                     "editor.tabSize": 2,
                     "editor.insertSpaces": true
                 },
                 
                 // Docker
                 "docker.showStartPage": false,
-                
-                // Kubernetes
-                "vs-kubernetes": 
-                {
-                    "vs-kubernetes.helm-path.linux": "/usr/local/bin/helm",
-                    "vs-kubernetes.kubectl-path.linux": "/usr/local/bin/kubectl"
-                },
                 
                 // UI
                 "workbench.iconTheme": "material-icon-theme",
@@ -173,14 +140,7 @@
     },
     "postCreateCommand": "dotnet restore",
     "postStartCommand": "dotnet dev-certs https --trust",
-     "mounts": 
-     [
-        // Kubernetes config
-        {
-            "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.kube",
-            "target": "/home/vscode/.kube",
-            "type": "bind"
-        },
+     "mounts": [
         // Git config
         {
             "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig",
@@ -192,26 +152,8 @@
             "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.ssh",
             "target": "/home/vscode/.ssh",
             "type": "bind"
-        },
-        // AWS credentials (if needed)
-        //{
-        //    "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.aws",
-        //    "target": "/home/vscode/.aws",
-        //    "type": "bind"
-        //},
-        // Docker config (for registry auth)
-        {
-            "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.docker",
-            "target": "/home/vscode/.docker-host",
-            "type": "bind"
         }
     ],
-    "containerEnv": 
-    {
-        "KUBECONFIG": "/home/vscode/.kube/config",
-        "DOTNET_CLI_TELEMETRY_OPTOUT": "1",
-        "DOTNET_SKIP_FIRST_TIME_EXPERIENCE": "1"
-    },
     "remoteUser": "vscode",
     "waitFor": "postCreateCommand"
 }
